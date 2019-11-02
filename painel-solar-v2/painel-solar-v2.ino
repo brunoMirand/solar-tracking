@@ -15,14 +15,16 @@ int LDR_BOTTOM_LEFT = A1;
 int LDR_TOP_RIGHT = A2;
 int LDR_BOTTOM_RIGHT = A3;
 
-const SPEED = 5;
+int SPEED = 5;
 int highestValue;
 
 void setup() {
     Serial.begin(9600);
 
     highestValue = getMaxValueBetweenSensors();
-    delay(3000);
+    Serial.println("highestValue");
+    Serial.println(highestValue);
+    delay(1000);
 
     servoMotorVertical.attach(6);
     servoMotorVertical.write(110);
@@ -101,6 +103,7 @@ int painelSolar() {
     Serial.println("RIGHT_AVERAGE");
     Serial.println(rightAverage);
     Serial.println("-----------");
+    delay(1000);
 }
 
 int getMaxValueBetweenSensors() {
@@ -109,8 +112,15 @@ int getMaxValueBetweenSensors() {
     int sensorTopRight = analogRead(LDR_TOP_RIGHT);
     int sensorBottomRight = analogRead(LDR_BOTTOM_RIGHT);
 
-    int sensorArray[4] = {sensorTopLeft, sensorBottomLeft, sensorTopRight, sensorBottomRight};
-    Array<int> array = Array<int>(sensorArray, 4);
+    // Top Average and Bottom Average (vertical rotation)
+    int topAverage = (sensorTopLeft + sensorTopRight) / 2;
+    int bottomAverage = (sensorBottomLeft + sensorBottomRight) / 2;
 
+    // Left Average and Right Average (horizontal rotation)
+    int leftAverage = (sensorTopLeft + sensorBottomLeft) / 2;
+    int rightAverage = (sensorTopRight + sensorBottomRight) / 2;
+
+    int sensorArray[4] = {topAverage, bottomAverage, leftAverage, rightAverage};
+    Array<int> array = Array<int>(sensorArray, 4);
     return array.getMax() + 5;
 }
