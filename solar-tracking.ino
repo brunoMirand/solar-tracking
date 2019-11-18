@@ -14,8 +14,8 @@
 
 AsyncWebServer server(80);
 
-const char * ssid = "Residencial";
-const char * password = "MPBBcintra";
+const char * ssid = "";
+const char * password = "";
 
 int LED_BUILTIN = 2;
 
